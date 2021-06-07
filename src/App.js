@@ -1,25 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from 'react';
+import {useDispatch} from 'react-redux';
+import {Switch, Route } from 'react-router-dom';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+//components 
 
-export default App;
+//hoc
+// import WithAuth from './hoc/withAuth';
+// import WithAdminAuth from './hoc/withAdminAuth';
+
+//layouts 
+import HomepageLayout from './layouts/HomepageLayout';
+//pages
+import Homepage from './pages/Homepage';
+
+
+
+import './default.scss';
+//actions
+
+export const App = () => {
+
+
+    return (
+      <div className="App">
+        <Switch>
+          <Route exact path="/" render={() => (
+            <HomepageLayout>
+              <Homepage />
+            </HomepageLayout>
+        )}/>
+        </Switch>
+  
+      </div>
+    );
+  }
+ 
+
+
+export default App
