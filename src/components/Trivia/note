@@ -1,0 +1,60 @@
+
+                //REEEEEEEEEEEEEEEEE
+                // Object.values(triviaData.results).map((triviaData) => 
+                //     <div key = {triviaData.id}>
+                //         <p>{triviaData.question}</p>
+                //         <p>{triviaData.incorrect_answers}, {triviaData.correct_answer}</p>
+    
+
+                        {/* <p>{triviaData.correct_answer}</p> */}
+                       // pass these two into an array and rand()
+
+                // Object.values(triviaData.results).map(key  => <li key={key}>{key.question}</li>)
+                // <triviaResults/>
+
+                // triviaData.results.map(u => <li>{u.results}</li>)
+
+                // triviaData.results.map(u => <li>{u.question}</li>)
+
+                // triviaData.results.map(u => <h3>{u.question}</h3>)}
+
+         
+//     return(
+//         triviaData.results.map(u => <li>{u.question}</li>)
+
+
+
+
+//         // Object.keys(triviaData).map((item,index) => {
+//         //     <h3></h3>
+//         // })
+//     )
+
+        // if(triviaData){
+        //     return  Object.keys(triviaData).map((item,index) => {
+        //         return(
+        //           <option value={triviaData[item].question} key={index}>
+        //               {triviaData[item].symbol}
+        //           </option>
+        //         )
+        //     })
+        // }  
+    // }
+
+    // const triviaResults = (props) => {
+    //     const {count, category, difficulty, type} = props.questions;
+    //     return 
+    //     <div className = 'questions'>
+    //         <p>{triviaData}</p>
+    //         <li>
+    //             </li>
+
+
+    //     </div>
+
+
+    // }
+    // const triviaResults = triviaData.results.map(u => <h3>{u.question}</h3>)
+    
+                    /* {loading ? "Loading..." : err ? err.message : triviaData.results.map(u => <h3>{u.incorrect_answers}</h3>)}
+                {loading ? "Loading..." : err ? err.message : triviaData.results.map(u => <h3>{u.correct_answers}</h3>)} */
