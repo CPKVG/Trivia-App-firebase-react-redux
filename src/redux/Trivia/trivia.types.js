@@ -1,7 +1,10 @@
 const triviaTypes = {
     SET_TRIVIA:'SET_TRIVIA', //get api data; array
-    
+
     SET_TRIVIA_ERR:'SET_TRIVIA_ERR', //get api err
+
+    CHECK_TRIVIA_ANSWERS:'CHECK_TRIVIA_ANSWERS', // get users trivia answers
+
     
     ADD_TRIVIA_COUNT:'ADD_TRIVIA_COUNT',
 

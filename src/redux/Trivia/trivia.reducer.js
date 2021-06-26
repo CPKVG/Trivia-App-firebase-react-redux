@@ -6,6 +6,10 @@ const INITIAL_STATE = {
     
 
     triviaShuffleAnswers:[],
+
+    triviaUserAnswer:[],
+
+
     triviaSetting:[],
 
     user_correct_answers: [],
@@ -16,18 +20,23 @@ const INITIAL_STATE = {
 const triviaReducer = (state=INITIAL_STATE, action) => {
     switch(action.type) {
         case triviaTypes.SET_TRIVIA:
-
-  
-          return {
+        return {
             ...state,
-            triviaData: action.payload,
-            triviaShuffleAnswers: action.payloadAnswers,
+            triviaData: action.payload, // default setup from api
+            triviaShuffleAnswers: action.payloadAnswers, // data api modified, answers shuffled
             loading: false,
-          }
+        }
         case triviaTypes.SET_TRIVIA_ERR:
         return{
             loading: false, 
             err: action.payload 
+        }
+        case triviaTypes.CHECK_TRIVIA_ANSWERS: //checks with selected answers with default api
+            
+        return {
+            ...state,
+            triviaUserAnswer: action.payload,
+
         }
 
 

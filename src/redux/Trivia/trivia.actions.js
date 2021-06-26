@@ -67,3 +67,20 @@ export const setTriviaSettings = (triviaSettings) => async dispatch =>{
         console.log(err)
     }
 }
+
+
+export const SetTriviaUserAnswer = (triviaUserAnswer ) => async dispatch =>{
+    console.log(triviaUserAnswer,"action")
+    
+
+    try{
+        dispatch({
+            type: triviaTypes.CHECK_TRIVIA_ANSWERS,
+            payload: triviaUserAnswer
+        })
+    
+    }catch(err){
+        console.log(err)
+    }
+}
+

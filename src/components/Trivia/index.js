@@ -1,11 +1,8 @@
 import React ,{useState} from 'react'
 import Button from './../forms/Button'
 // import axios from 'axios'
-import {setTrivia, setTriviaSettings} from './../../redux/Trivia/trivia.actions'
+import {setTrivia, setTriviaSettings, SetTriviaUserAnswer } from './../../redux/Trivia/trivia.actions'
 import { useDispatch, useSelector } from 'react-redux';
-
-
-
 
 
     const Trivia = () => {
@@ -15,6 +12,9 @@ import { useDispatch, useSelector } from 'react-redux';
         const [difficulty, handleSetDifficulty] = useState('')
         const [type, handleSetType] = useState('')
 
+
+        const [values, setValues] = useState([])
+
         const trivia = useSelector(state => state.trivia)
 
 //if user wants to change settings of trivia 
@@ -23,40 +23,107 @@ import { useDispatch, useSelector } from 'react-redux';
         // const triviaAnswerShuffle = {incorrect_answers,correct_answer}
 //trivia default, bypass settings 
         const {loading, triviaData, err, triviaShuffleAnswers} = trivia
+
         
+        //  const triviaUserAnswer = [{}]
+        //  triviaUserAnswer.push({...values})
+
+        const triviaUserAnswer = {...values}
+        console.log(triviaUserAnswer)
 
         // const { triviaData } = useSelector();
         const dispatch = useDispatch();
 
         const onLoadTrivia = () =>{
             dispatch(setTrivia());
-            console.log(triviaData)
+            // console.log(triviaData)
         }
 
 
-        const handleSubmit = (e) => {
+        const handleOptionSubmit = (e) => {
             e.preventDefault();
-            dispatch(setTriviaSettings({triviaSettings}))
+            dispatch(setTriviaSettings(triviaSettings))
+         }
+
+
+        const handleInputChange = (e) =>{
+            
+            const { value, name, id } = e.target;
+            
+                setValues(prevValues => [...prevValues,{
+                    id:id,
+                    users_answer:value,
+                    correct_answer:shuffledAnswers[id].correct_answer,
+                    question:name,
+                    mark:shuffledAnswers[id].correct_answer == value  ? 'Correct' : 'Incorrect'
+                }])
+
+
+      }
+
+
+         const handleSubmit = (e) => {
+             e.preventDefault();
+
+            dispatch(SetTriviaUserAnswer(triviaUserAnswer))
+            //trigger score presenting page
+            resultsDisplay()
+         }
+
+         //trivia score calc
+         const resultsDisplay = () =>{
+
+            //triviaUserAnswers recorders every values users select on radio button, 
+
+            //function to group values by their ID (find duplicates)
+            const groupBy = (objectArray, property) =>{
+                return objectArray.reduce(function (acc, obj) {
+                    const key = obj[property]
+                        if (!acc[key]) { acc[key] = [] }
+                        acc[key].push(obj)
+                        
+                        return acc
+                  }, {}) 
+            }
+            const groupedIndex = groupBy(Object.values(triviaUserAnswer), 'id')
+
+
+
+            
+            const updatedUserAnswers = []
+
+            Object.values(groupedIndex).map((key) =>{
+                // groupedIndex.length == 1 ? updatedUserAnswers.push(key): updatedUserAnswers.push(key.slice(-1)) //prohibut slice(-1) on array length == 1
+                updatedUserAnswers.push(...(key.slice(-1))) // remove all data except last inputed value
+            })
+            
+            const correctAnswerCount = Object.values(updatedUserAnswers).reduce(((count, {mark}) => mark == 'Correct' ? count + 1 : count), 0) 
+
+
+
+            //  return (
+            //      //will refactor this resultsDisplay into results/index.js and render as seperate page 
+
+            //     // <h1>You Scored <correctAnswerCount/></h1>
+            //     // correctAnswerCount
+            //  )
          }
 
 
          // create answer key  placement for shuffled answers 
         const answersAssign = (array) => [{"answers": array }] 
 
-         //assign the answer key into the triviaData array as shuffledAnswers(these contained the shuffled answer data)
+         //assign the answers key into the triviaData array as shuffledAnswers(these contained the shuffled answer data)
         const shuffledAnswers = triviaData.map((item, i) => Object.assign({},item, ...answersAssign(...[triviaShuffleAnswers[i]]) ))
-                
+        //shuffledAnswers will evenullay be used to match the answers from users to score them
+        console.log(shuffledAnswers,"shuffledAnswers")
 
 
-        const inputArrayAttribute = (array) => {
-            console.log(array)
-   
-        }
 
         return (
 
             <div>
-            <form onSubmit = {handleSubmit}>
+            <form onSubmit = {handleOptionSubmit}>
 
                 {/* <input type = "text" value = {amount} onChange ={e => setAmount(e.target.value)}/> */}
                 {/* <span className = "amountBtn"
@@ -113,7 +180,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 
 
-                <button  type = "submit">
+                <button type = "submit">
                     Confirm Settings
                 </button>
             </form>
@@ -123,32 +190,45 @@ import { useDispatch, useSelector } from 'react-redux';
             </Button>
             
             <br/>
-
-                {console.log(shuffledAnswers),
+                <form onSubmit = {handleSubmit}>
+                {loading ? "Loading..." : err ? err.message : 
                 
-                loading ? "Loading..." : err ? err.message :
-                
+                    shuffledAnswers.map(({question, answers, correct_answer}, index) => 
+                        <div>
+                            
+                            <p>{question}</p>
+                            <p>{correct_answer}</p>
+                            {answers.map((answers)=>
+                                <div id={index}>
+                                    
+                                    <label>
 
-                shuffledAnswers.map(({question,answers}, index) => 
-                    <div>
-                        <p>{question}</p>
-                        {answers.map((answers, index)=>
-                            <div key={index}>
-
-                                <label>
-                                <input name="triviaAnswers" key={index} type="radio" />
-                                {answers}
-                                </label>
-                            </div>
-                            )}
-
+                                    <input type="radio" name={question} id={index} value={answers} onChange={handleInputChange} />
+                                    {answers}
+                                    
+                                    {/*add correct value as value = (answers, correct answers) and use these to compare*/}
+                                    </label>
+                                </div>
+                                )}      
                         </div>
-                )             
-                    }
+                ) 
+
+                
+         
+                
+                
+
+            }
+
+            {loading ? "Loading..." : err ? err.message : <button type="submit"> Submit </button>}
+            </form>
+            
+            {resultsDisplay}
+
             </div>
 
         
-    
+
     )
     }
 
