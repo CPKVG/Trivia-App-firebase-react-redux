@@ -3,7 +3,8 @@ import Button from './../forms/Button'
 // import axios from 'axios'
 import {setTrivia, setTriviaSettings, SetTriviaUserAnswer } from './../../redux/Trivia/trivia.actions'
 import { useDispatch, useSelector } from 'react-redux';
-
+import Results from './Result'
+import { useHistory } from "react-router-dom";
 
     const Trivia = () => {
 
@@ -21,15 +22,16 @@ import { useDispatch, useSelector } from 'react-redux';
         const triviaSettings = {count, category, difficulty, type} 
 
         // const triviaAnswerShuffle = {incorrect_answers,correct_answer}
+
+
 //trivia default, bypass settings 
         const {loading, triviaData, err, triviaShuffleAnswers} = trivia
-
+        console.log(trivia,"trivia")
         
         //  const triviaUserAnswer = [{}]
         //  triviaUserAnswer.push({...values})
 
-        const triviaUserAnswer = {...values}
-        console.log(triviaUserAnswer)
+        const triviaUserValues = {...values}
 
         // const { triviaData } = useSelector();
         const dispatch = useDispatch();
@@ -38,6 +40,18 @@ import { useDispatch, useSelector } from 'react-redux';
             dispatch(setTrivia());
             // console.log(triviaData)
         }
+
+
+
+/*PAGE REDIRECTION ONSUBMIT */
+        const history = useHistory();
+
+        // const routeChange = () =>{ 
+        //     let path = `newPath`;  // redirect page to present results
+        //     history.push(path);
+        //   }
+/*END */
+
 
 
         const handleOptionSubmit = (e) => {
@@ -64,17 +78,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
          const handleSubmit = (e) => {
              e.preventDefault();
-
-            dispatch(SetTriviaUserAnswer(triviaUserAnswer))
-            //trigger score presenting page
-            resultsDisplay()
-         }
-
-         //trivia score calc
-         const resultsDisplay = () =>{
-
-            //triviaUserAnswers recorders every values users select on radio button, 
-
+            
             //function to group values by their ID (find duplicates)
             const groupBy = (objectArray, property) =>{
                 return objectArray.reduce(function (acc, obj) {
@@ -85,29 +89,24 @@ import { useDispatch, useSelector } from 'react-redux';
                         return acc
                   }, {}) 
             }
-            const groupedIndex = groupBy(Object.values(triviaUserAnswer), 'id')
+            const groupedIndex = groupBy(Object.values(triviaUserValues), 'id')
 
-
-
-            
-            const updatedUserAnswers = []
+            const triviaUserAnswer = []
 
             Object.values(groupedIndex).map((key) =>{
                 // groupedIndex.length == 1 ? updatedUserAnswers.push(key): updatedUserAnswers.push(key.slice(-1)) //prohibut slice(-1) on array length == 1
-                updatedUserAnswers.push(...(key.slice(-1))) // remove all data except last inputed value
+                triviaUserAnswer.push(...(key.slice(-1))) // remove all data except last inputed value
             })
-            
-            const correctAnswerCount = Object.values(updatedUserAnswers).reduce(((count, {mark}) => mark == 'Correct' ? count + 1 : count), 0) 
+            const correctAnswerCount = Object.values(triviaUserAnswer).reduce(((count, {mark}) => mark == 'Correct' ? count + 1 : count), 0) 
+            console.log(correctAnswerCount,"correctAnswerCount")
+            dispatch(SetTriviaUserAnswer({triviaUserAnswer},{correctAnswerCount}))
 
 
+            let path = `results`;  // redirect page to present results
+            history.push(path);
 
-            //  return (
-            //      //will refactor this resultsDisplay into results/index.js and render as seperate page 
-
-            //     // <h1>You Scored <correctAnswerCount/></h1>
-            //     // correctAnswerCount
-            //  )
          }
+
 
 
          // create answer key  placement for shuffled answers 
@@ -115,8 +114,9 @@ import { useDispatch, useSelector } from 'react-redux';
 
          //assign the answers key into the triviaData array as shuffledAnswers(these contained the shuffled answer data)
         const shuffledAnswers = triviaData.map((item, i) => Object.assign({},item, ...answersAssign(...[triviaShuffleAnswers[i]]) ))
+
         //shuffledAnswers will evenullay be used to match the answers from users to score them
-        console.log(shuffledAnswers,"shuffledAnswers")
+        // console.log(shuffledAnswers,"shuffledAnswers")
 
 
 
@@ -215,16 +215,14 @@ import { useDispatch, useSelector } from 'react-redux';
 
                 
          
-                
-                
+        
 
             }
 
-            {loading ? "Loading..." : err ? err.message : <button type="submit"> Submit </button>}
+            {loading ? "Loading..." : err ? err.message : <button type="submit" > Submit </button>}
             </form>
-            
-            {resultsDisplay}
-
+    
+            {/* {showResults ? <Results/> : console.log("false")} */}
             </div>
 
         

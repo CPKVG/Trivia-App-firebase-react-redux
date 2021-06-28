@@ -44,19 +44,6 @@ export const setTrivia = () => async dispatch => {
 }
 
 
-
-
-// export const addTriviaCount = (count) =>({
-//     type: triviaTypes.ADD_TRIVIA_COUNT,
-//     payload: count
-//  });
-
-//  export const reduceTriviaCount = (count) =>({
-//     type: triviaTypes.REDUCE_TRIVIA_COUNT,
-//     payload: count
-//  });
-
-
 export const setTriviaSettings = (triviaSettings) => async dispatch =>{
     try{
         dispatch({
@@ -69,18 +56,50 @@ export const setTriviaSettings = (triviaSettings) => async dispatch =>{
 }
 
 
-export const SetTriviaUserAnswer = (triviaUserAnswer ) => async dispatch =>{
-    console.log(triviaUserAnswer,"action")
-    
-
+export const SetTriviaUserAnswer = (triviaUserAnswer,correctAnswerCount) => async dispatch =>{
     try{
+
         dispatch({
             type: triviaTypes.CHECK_TRIVIA_ANSWERS,
-            payload: triviaUserAnswer
-        })
+            payload: triviaUserAnswer, //answers users picked
+            payloadCount:correctAnswerCount // number of answers correct
+        }) 
     
     }catch(err){
         console.log(err)
     }
+
 }
 
+
+
+// // count the amount of correct answers from triviaUserAnswer
+// export const SetTriviaCount = (correctAnswerCount) => async dispatch =>{
+//     // const correctAnswerCount = Object.values(triviaUserAnswer).reduce(((count, {mark}) => mark == 'Correct' ? count + 1 : count), 0) 
+//     // const correctAnswerCount = ''
+//     // console.log(correctAnswerCount,"action")
+//     try{
+//         dispatch({
+//             type: triviaTypes.CHECK_TRIVIA_ANSWERS_SCORE,
+//             payload: correctAnswerCount
+//         })
+//     }catch(err){
+//         console.log(err)
+//     }
+
+// }
+
+// export const SetTriviaCount = () => async dispatch =>{
+//     // const correctAnswerCount = Object.values(triviaUserAnswer).reduce(((count, {mark}) => mark == 'Correct' ? count + 1 : count), 0) 
+//     const correctAnswerCount =''
+//     try{
+//         dispatch({
+//             type: triviaTypes.CHECK_TRIVIA_ANSWERS_SCORE,
+//             payload: correctAnswerCount
+//         })
+    
+//     }catch(err){
+//         console.log(err)
+//     }
+
+// }

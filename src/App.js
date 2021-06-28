@@ -13,7 +13,7 @@ import HomepageLayout from './layouts/HomepageLayout';
 //pages
 import Homepage from './pages/Homepage';
 
-
+import Resultpage from './pages/Resultpage'
 
 import './default.scss';
 //actions
@@ -27,6 +27,11 @@ export const App = () => {
           <Route exact path="/" render={() => (
             <HomepageLayout>
               <Homepage />
+            </HomepageLayout>
+        )}/>
+        <Route exact path="/results" render={() => (
+            <HomepageLayout>
+              <Resultpage />
             </HomepageLayout>
         )}/>
         </Switch>

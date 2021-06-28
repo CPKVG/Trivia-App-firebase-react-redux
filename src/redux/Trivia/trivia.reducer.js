@@ -9,7 +9,7 @@ const INITIAL_STATE = {
 
     triviaUserAnswer:[],
 
-
+    correctAnswerCount:[],
     triviaSetting:[],
 
     user_correct_answers: [],
@@ -31,21 +31,21 @@ const triviaReducer = (state=INITIAL_STATE, action) => {
             loading: false, 
             err: action.payload 
         }
-        case triviaTypes.CHECK_TRIVIA_ANSWERS: //checks with selected answers with default api
-            
+
+        case triviaTypes.SET_TRIVIA_SETTINGS:
+            return{
+            ...state,
+                triviaSetting: action.payload
+        }
+
+        case triviaTypes.CHECK_TRIVIA_ANSWERS: //checks with selected answers with default api    
         return {
             ...state,
             triviaUserAnswer: action.payload,
-
+            correctAnswerCount: action.payloadCount,
+            loading: false,
+            
         }
-
-
-        
-        case triviaTypes.SET_TRIVIA_SETTINGS:
-        return{
-        ...state,
-            triviaSetting: action.payload
-    }
 
 
         

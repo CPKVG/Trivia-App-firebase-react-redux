@@ -11,7 +11,7 @@ const HomepageLayout = props => {
             {props.children}
             <Footer />
         </div>
-    );
+    );  
 };
 
 export default HomepageLayout;
