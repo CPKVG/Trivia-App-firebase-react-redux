@@ -2,34 +2,36 @@ import triviaTypes from './trivia.types';
 import axios from 'axios'
 
 
-// const triviaParam = `amount=${amount}&category=${category}&difficulty=${difficulty}&type=${type}`
 
+function apiFiltering(result){ // this is used for both setTrivia and triviaSettings as they request different data 
 
-// const triviaAmount = ''
-// const triviaCategory = ''
-// const triviaDifficulty = ''
-// const triviaType = ''
+    const answers = result.map((results) => [results.correct_answer, ...results.incorrect_answers]);
 
-    
+    function shuffle(array){
+        array = array.sort(() => Math.random() - 0.5)
+        return array
+    }
+
+    const answerShuffle = []
+
+    answers.forEach((item => answerShuffle.push(shuffle(item))));
+
+    return(
+        answerShuffle
+    )
+}
+
 
 export const setTrivia = () => async dispatch => {
-
+    
     try {
-        /*https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple */
-        const res  = await axios.get(`https://opentdb.com/api.php?amount=10`) // default setting
-        const results = res.data.results
 
-        const answers = results.map((results) => [results.correct_answer, ...results.incorrect_answers]);
+        const res = await axios.get(`https://opentdb.com/api.php?amount=10`)
 
-        function shuffle(array){
-            array = array.sort(() => Math.random() - 0.5)
-            return array
-        }
+        const result = res.data.results
 
-        const answerShuffle = []
-
-        answers.forEach((item => answerShuffle.push(shuffle(item))));
-        // console.log(answerShuffle,"answerShuffle")
+        const answerShuffle = apiFiltering(result)
+        
         dispatch({
         type: triviaTypes.SET_TRIVIA,
         payload: res.data.results,
@@ -45,15 +47,31 @@ export const setTrivia = () => async dispatch => {
 
 
 export const setTriviaSettings = (triviaSettings) => async dispatch =>{
+    const countAPI = `amount=${triviaSettings.count}`
+    const categoryAPI = `&category=${triviaSettings.category}`
+    const difficultyAPI = `&difficulty=${triviaSettings.difficulty}`
+    const typeAPI = `&type=${triviaSettings.type}`
+
+    const res = await axios.get(`https://opentdb.com/api.php?${countAPI}${categoryAPI}${difficultyAPI}${typeAPI}`)
+
+    const result = res.data.results
+
+    const answerShuffle = apiFiltering(result)
+
+
+
     try{
         dispatch({
             type: triviaTypes.SET_TRIVIA_SETTINGS,
-            payload: triviaSettings
+            payload: triviaSettings,
+            payloadRes: answerShuffle,
         })
     }catch(err){
         console.log(err)
     }
 }
+
+
 
 
 export const SetTriviaUserAnswer = (triviaUserAnswer,correctAnswerCount) => async dispatch =>{

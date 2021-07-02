@@ -35,7 +35,9 @@ const triviaReducer = (state=INITIAL_STATE, action) => {
         case triviaTypes.SET_TRIVIA_SETTINGS:
             return{
             ...state,
-                triviaSetting: action.payload
+                triviaSetting: action.payload,
+                triviaDataSetting:action.payloadRes,
+                loading: false,
         }
 
         case triviaTypes.CHECK_TRIVIA_ANSWERS: //checks with selected answers with default api    

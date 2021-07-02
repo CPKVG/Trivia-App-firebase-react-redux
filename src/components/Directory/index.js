@@ -6,7 +6,6 @@ import Trivia from './../Trivia'
 const Directory = props => {
   return (
     <div className="directory">
-        <p>HOMEPAGE</p>
         <Trivia/>
     </div>
   );    
