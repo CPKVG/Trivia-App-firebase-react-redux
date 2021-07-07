@@ -5,6 +5,8 @@ const triviaTypes = {
 
     CHECK_TRIVIA_ANSWERS:'CHECK_TRIVIA_ANSWERS', // get users trivia answers
 
+    GET_TRIVIA_ANSWERS:'GET_TRIVIA_ANSWERS',
+
     // CHECK_TRIVIA_ANSWERS_SCORE:'CHECK_TRIVIA_ANSWERS_SCORE', // number of correct answers
 
     

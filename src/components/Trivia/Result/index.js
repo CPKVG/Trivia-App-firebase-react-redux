@@ -45,13 +45,13 @@ const Result = () => {
                 <li value = {index + 1}>{question}</li>
                 </ol>
                     { mark == "Incorrect" ? 
-                    [<ul class="list">
+                    [<ul className="list">
                         <li>Your answer was: {mark}</li>
                         <li>Correct answer was: {correct_answer}</li>
                         <li>You answered: {users_answer}</li>
                     </ul>
                         ] : [
-                    <ul class="list">
+                    <ul className="list">
                         <li>You were: {mark}</li>
                         <li>You answered: {users_answer}</li>
                     </ul>

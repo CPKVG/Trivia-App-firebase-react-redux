@@ -115,7 +115,7 @@ import Setting from './Setting'
             { displaySettings ? <Setting /> : 
 
             <Button onClick = {() => onLoadTrivia()}>
-                Start Trivia
+                Start Trivia (default)
             </Button> }
             
 

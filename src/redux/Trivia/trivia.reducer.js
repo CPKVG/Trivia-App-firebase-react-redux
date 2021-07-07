@@ -14,6 +14,7 @@ const INITIAL_STATE = {
 
     user_correct_answers: [],
     user_incorrect_answers:[],
+    fetchTriviaUserAnswer:[],
 
 };
 
@@ -36,7 +37,6 @@ const triviaReducer = (state=INITIAL_STATE, action) => {
             return{
             ...state,
                 triviaSetting: action.payload,
-                triviaDataSetting:action.payloadRes,
                 loading: false,
         }
 
@@ -48,6 +48,14 @@ const triviaReducer = (state=INITIAL_STATE, action) => {
             loading: false,
             
         }
+
+        case triviaTypes.GET_TRIVIA_ANSWERS:
+            return{
+                ...state,
+                fetchTriviaUserAnswer: action.payload,
+                loading: false,
+            }
+
 
 
         

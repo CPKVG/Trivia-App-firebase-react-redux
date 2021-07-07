@@ -7,13 +7,15 @@ import styles from './styles.scss'
 const Setting = () => {
     const dispatch = useDispatch();
 
-    const [count, handleSetCount] = useState('')
+    const [count, handleSetCount] = useState(10)
     const [category, handleSetCategory] = useState('')
     const [difficulty, handleSetDifficulty] = useState('')
     const [type, handleSetType] = useState('')
 
-    
+    // const [errMsg, handleErrMsg] = useState('')
 
+
+    //*****if(count > 26) // build an error message like trivia index if count is greater than 25
 
     const triviaSettings = {count, category, difficulty, type} 
     // dispatch(setTrivia(triviaSettings))
@@ -22,6 +24,7 @@ const Setting = () => {
     const handleOptionSubmit = (e) => {
         e.preventDefault();
         dispatch(setTriviaSettings(triviaSettings))
+        // setTrivia to reset and bring up trivia + settings??
         dispatch(setTrivia(triviaSettings))
      }
 
@@ -36,13 +39,14 @@ const Setting = () => {
 
 
     return (
-        <div>
-            <form onSubmit = {handleOptionSubmit}>
+    <div>
+        <form onSubmit = {handleOptionSubmit}>
             <div className = "optionForm">
 
             <div className = "formInput">
                 Number of questions :
                 <input type="text" placeholder = "10" onChange = {(e) => handleSetCount(e.target.value)}></input>
+                (max 50)
             </div>
 
 
@@ -102,7 +106,7 @@ const Setting = () => {
 
 
             <button type = "submit">
-                Generate new trivia
+                Generate new trivia (with settings)
             </button> 
             </div> 
         </form>

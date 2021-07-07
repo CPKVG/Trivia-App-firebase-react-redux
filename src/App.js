@@ -1,24 +1,51 @@
 import React, { useEffect } from 'react';
 import {useDispatch} from 'react-redux';
 import {Switch, Route } from 'react-router-dom';
+import { auth, handleUserProfile } from './firebase/utils';
+import { setCurrentUser } from './redux/User/user.actions';
 
 //components 
 
-//hoc
-// import WithAuth from './hoc/withAuth';
-// import WithAdminAuth from './hoc/withAdminAuth';
+
+// hoc
+import WithAuth from './hoc/withAuth';
 
 //layouts 
 import HomepageLayout from './layouts/HomepageLayout';
 //pages
 import Homepage from './pages/Homepage';
-
 import Resultpage from './pages/Resultpage'
 
+import Registration from './pages/Registration';
+import Login from './pages/Login';
+import Recovery from './pages/Recovery';
+import Dashboard from './pages/Dashboard';
 import './default.scss';
-//actions
 
-export const App = () => {
+
+const App = props => {
+  // user auth
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const authListener = auth.onAuthStateChanged(async userAuth => {
+      if (userAuth) {
+        const userRef = await handleUserProfile(userAuth);
+        userRef.onSnapshot(snapshot => {
+          dispatch(setCurrentUser({
+            id: snapshot.id,
+            ...snapshot.data()
+          }));
+        })
+      }
+
+      dispatch(setCurrentUser(userAuth));
+    });
+
+    return () => {
+      authListener();
+    };
+  }, []);
 
 
     return (
@@ -34,6 +61,30 @@ export const App = () => {
               <Resultpage />
             </HomepageLayout>
         )}/>
+        
+        <Route exact path="/registration" render={() => (
+          <HomepageLayout>
+            <Registration />
+          </HomepageLayout>
+        )} />
+        <Route exact path="/login"
+          render={() => (
+            <HomepageLayout>
+              <Login />
+            </HomepageLayout>
+          )} />
+        <Route exact path="/recovery" render={() => (
+          <HomepageLayout>
+            <Recovery />
+          </HomepageLayout>
+        )} />
+        <Route exact path="/dashboard" render={() => (
+          <WithAuth>
+            <HomepageLayout>
+              <Dashboard />
+            </HomepageLayout>
+          </WithAuth>
+        )} />
         </Switch>
   
       </div>
