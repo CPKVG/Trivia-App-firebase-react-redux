@@ -57,7 +57,7 @@ return(
     <div>
 
     {<Button onClick = {() => showSavedData()} >Show Previous Results</Button> }
-    {loading ? "Loading..." : err ? err.message : 
+    {loading ? "" : err ? err.message : 
         fetchTriviaUserAnswer.map(({createdDate,correctAnswerCount,triviaUserAnswer}, index) =>
         
             <div key = {index}>
